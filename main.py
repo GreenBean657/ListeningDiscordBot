@@ -7,8 +7,17 @@ import discord
 import json
 
 runners = {
-    "on_ready":[],
-    "on_message":[],
+    "on_ready": [],
+    "on_message": [],
+    "on_message_delete": [],
+    "on_bulk_message_delete": [],
+    "on_message_edit": [],
+    "on_reaction_add": [],
+    "on_reaction_remove": [],
+    "on_member_join": [],
+    "on_member_remove": [],
+    "on_guild_join": [],
+    "on_guild_remove": []
 }
 
 try:
@@ -33,6 +42,69 @@ class MyClient(discord.Client):
                     await event.on_trigger("on_message", [prefix, message])
                 except Exception as exception:
                     pass
+
+    async def on_message_delete(self, message):
+        for event in runners["on_message_delete"]:
+            try:
+                await event.on_trigger("on_message_delete", [prefix, message])
+            except Exception as exception:
+                pass
+
+    async def on_bulk_message_delete(self, messages):
+        for event in runners["on_bulk_message_delete"]:
+            try:
+                await event.on_trigger("on_bulk_message_delete", [prefix, messages])
+            except Exception as exception:
+                pass
+
+    async def on_message_edit(self, message_before, message_after):
+        for event in runners["on_message_edit"]:
+            try:
+                await event.on_trigger("on_message_edit", [prefix, message_before, message_after])
+            except Exception as exception:
+                pass
+
+    async def on_reaction_add(self, reaction, user):
+        for event in runners["on_reaction_add"]:
+            try:
+                await event.on_trigger("on_reaction_add", [prefix, reaction, user])
+            except Exception as exception:
+                pass
+
+    async def on_reaction_remove(self, reaction, user):
+        for event in runners["on_reaction_remove"]:
+            try:
+                await event.on_trigger("on_reaction_remove", [prefix, reaction, user])
+            except Exception as exception:
+                pass
+
+    async def on_member_join(self, user):
+        for event in runners["on_member_join"]:
+            try:
+                await event.on_trigger("on_member_join", [prefix, user])
+            except Exception as exception:
+                pass
+
+    async def on_member_remove(self, user):
+        for event in runners["on_member_remove"]:
+            try:
+                await event.on_trigger("on_member_remove", [prefix, user])
+            except Exception as exception:
+                pass
+
+    async def on_guild_join(self, guild):
+        for event in runners["on_guild_join"]:
+            try:
+                await event.on_trigger("on_guild_join", [prefix, guild])
+            except Exception as exception:
+                pass
+
+    async def on_guild_remove(self, guild):
+        for event in runners["on_guild_remove"]:
+            try:
+                await event.on_trigger("on_guild_remove", [prefix, guild])
+            except Exception as exception:
+                pass
 
 intents = discord.Intents.default()
 intents.message_content = True
